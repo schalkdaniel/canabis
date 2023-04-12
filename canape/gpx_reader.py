@@ -86,5 +86,7 @@ def readStravaGPX(file) -> pd.DataFrame:
     df['active'] = active
     df['updown'] = df.ele.diff()
     df['seconds_interval'] = df.seconds.diff()
+    df['speed'] = df['meters'] / df['seconds_interval'] * 3600
+    df.speed.where(df['speed'] <= 100, None, inplace = True)
     
     return df
