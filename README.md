@@ -5,6 +5,8 @@
 data from [Strava](https://strava.com). The `Ride` class allows to read
 a file and converts it to a `pandas` data frame.
 
+### Import data
+
 Importing the `Ride` class allows to read from Strave `*.gpx` files:
 
 ``` python
@@ -14,7 +16,7 @@ ride = Ride("data/After_Riccione.gpx")
 ride.data[['ele', 'time', 'power', 'lon', 'lat', 'speed']].head()
 ```
 
-    |████████████████████████████████████████| 15659/15659 [100%] in 24.9s (629.04/s) 
+    |████████████████████████████████████████| 15659/15659 [100%] in 28.0s (558.77/s) 
 
 <div>
 <style scoped>
@@ -91,6 +93,8 @@ ride.data[['ele', 'time', 'power', 'lon', 'lat', 'speed']].head()
   </tbody>
 </table>
 </div>
+
+### Functionality
 
 Helper functions allows to show a summary of relevant statistics like
 the normalized power, average speed, or climbed meters:
