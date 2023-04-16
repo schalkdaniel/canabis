@@ -1,5 +1,6 @@
-# canabis/__init__.py
+# canape/__init__.py
 
-from .gpx_reader import *
+from .gpx_reader import readStravaGPX
+from .ride import Ride
 
-__all__ = ['my_function']
+__all__ = ['readStravaGPX', 'Ride']

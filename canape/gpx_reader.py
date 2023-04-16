@@ -6,17 +6,17 @@ from alive_progress import alive_bar
 
 def haversine(lon1, lat1, lon2, lat2):
     """
-    Calculate the great circle distance in kilometers between two points 
+    Calculate the great circle distance in kilometers between two points
     on the earth (specified in decimal degrees)
     """
-    # convert decimal degrees to radians 
+    # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-    
-    # haversine formula 
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
+ 
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a)) 
+    c = 2 * asin(sqrt(a))
     r = 6371 # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
     return c * r
 
@@ -53,7 +53,7 @@ def toDateTime(tstring, timeformat = '%Y-%m-%dT%H:%M:%SZ'):
 def readStravaGPX(file) -> pd.DataFrame:
     dom = minidom.parse(file)
     elements = dom.getElementsByTagName('trkpt')
-    
+ 
     lat = []
     lon = []
     seconds = []
@@ -78,7 +78,7 @@ def readStravaGPX(file) -> pd.DataFrame:
                     active.append(False)
             df = pd.concat([df, rowmeta], ignore_index = True)
             bar()
-    
+ 
     df['lat'] = lat
     df['lon'] = lon
     df['seconds'] = seconds
@@ -88,5 +88,5 @@ def readStravaGPX(file) -> pd.DataFrame:
     df['seconds_interval'] = df.seconds.diff()
     df['speed'] = df['meters'] / df['seconds_interval'] * 3600
     df.speed.where(df['speed'] <= 100, None, inplace = True)
-    
+ 
     return df

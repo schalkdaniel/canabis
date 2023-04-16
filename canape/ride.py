@@ -1,6 +1,6 @@
 # For all kinds of formulas see: https://medium.com/critical-powers/formulas-from-training-and-racing-with-a-power-meter-2a295c661b46
 
-from gpx_reader import readStravaGPX
+from .gpx_reader import readStravaGPX
 from math import floor
 import plotly.graph_objs as go
 import numpy as np
@@ -16,33 +16,32 @@ def prettyTime(t):
     else:
         seconds = 60 * (minutes % floor(minutes))
     return str(hours).zfill(2) + ":" + str(floor(minutes)).zfill(2) + ":"\
-           + str(floor(seconds)).zfill(2) + " h"
-
+            + str(floor(seconds)).zfill(2) + " h"
 
 class Ride:
     def __init__(self, file):
         df = readStravaGPX(file)
         self.data = df
         meta = {'up': sum(df.updown[df.updown > 0]),
-               'down': sum(df.updown[df.updown < 0]),
-               'distance': sum(df.meters),
-               'hours_total': sum(df.seconds_interval[1:]) / 60**2,
-               'hours_active': sum(df.seconds_interval[df.active]) / 60**2,
-               'hours_paused': sum(df.seconds_interval[~df.active]) / 60**2,
-               'avg_speed': sum(df.meters) / (sum(df.seconds_interval[df.active]) / 60**2), 
-               'avg_power': df.power[df.active].mean(),
-               'np': Ride.np(self)}
+                'down': sum(df.updown[df.updown < 0]),
+                'distance': sum(df.meters),
+                'hours_total': sum(df.seconds_interval[1:]) / 60**2,
+                'hours_active': sum(df.seconds_interval[df.active]) / 60**2,
+                'hours_paused': sum(df.seconds_interval[~df.active]) / 60**2,
+                'avg_speed': sum(df.meters) / (sum(df.seconds_interval[df.active]) / 60**2),
+                'avg_power': df.power[df.active].mean(),
+                'np': Ride.np(self)}
         meta['vi'] = meta['np'] / meta['avg_power']
         self.summary = meta
     
     def summarize(self):
         print(f"{round(self.summary['distance'], 2)} km - "\
-            + f"{prettyTime(self.summary['hours_active'])} - "\
-            + f"{round(self.summary['up'])} m climbed\n"\
-            + f"  - Avg. power: {round(self.summary['avg_power'], 2)}\n"\
-            + f"  - Normalized power: {self.summary['np']}\n"\
-            + f"  - Avg. speed: {round(self.summary['avg_speed'], 2)}\n"\
-            + f"  - Total time: {prettyTime(self.summary['hours_total'])}")
+                + f"{prettyTime(self.summary['hours_active'])} - "\
+                + f"{round(self.summary['up'])} m climbed\n"\
+                + f"  - Avg. power: {round(self.summary['avg_power'], 2)}\n"\
+                + f"  - Normalized power: {self.summary['np']}\n"\
+                + f"  - Avg. speed: {round(self.summary['avg_speed'], 2)}\n"\
+                + f"  - Total time: {prettyTime(self.summary['hours_total'])}")
     
     def np(self, window = 30):
         dfactive = self.data[self.data.active].copy()
@@ -68,17 +67,17 @@ class Ride:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x = dfactive['seconds'], y = dfactive['bscaled'],
                                  fill = 'tonexty', name = bname, showlegend = False))
-        fig.add_trace(go.Scatter(x = dfactive['seconds'], y = dfactive[cname], 
+        fig.add_trace(go.Scatter(x = dfactive['seconds'], y = dfactive[cname],
                                  mode = "lines", name = cname, showlegend = False))
         fig.update_layout(
-            yaxis = dict(
-                title = cname),
-            xaxis = dict(
-                title = None,
-                tickmode = 'array',
-                tickvals = tvals,
-                ticktext = tlabs)
-            )
+                yaxis = dict(
+                    title = cname),
+                xaxis = dict(
+                    title = None,
+                    tickmode = 'array',
+                    tickvals = tvals,
+                    ticktext = tlabs)
+                )
         return fig
 
 # dat = readStravaGPX("../data/After_Riccione.gpx")
