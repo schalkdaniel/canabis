@@ -9,6 +9,7 @@ The `Ride` class allows to read a file and converts it to a `pandas` data frame.
 
 
 Importing the `Ride` class allows to read from Strave `*.gpx` files:
+
 ```{python}
 from canape import Ride
 
@@ -17,17 +18,20 @@ ride.data[['ele', 'time', 'power', 'lon', 'lat', 'speed']].head()
 ```
 
 Helper functions allows to show a summary of relevant statistics like the normalized power, average speed, or climbed meters:
+
 ```{python}
 ride.summary
 ```
 
 Setting an FTP automatically calculates further statistics such as the intensity factor or stress level:
+
 ```{python}
 ride.setFTP(250)
 ride.summary
 ```
 
 Plotting is done with plotly as backend:
+
 ```{python}
 #| eval: false
 ride.plotData('power').show()
