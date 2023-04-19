@@ -45,8 +45,12 @@ ride.powerCurve()
 The same principle to obtain maximal values over specific time windows can be applied for any column
 with `.rollMax()`:
 ```{python}
-ride.rollMax(window = [1, 30, 600], vname = 'speed')
 ride.rollMax(vname = 'watt_kg')
+```
+
+Or with a custom array of  seconds:
+```{python}
+ride.rollMax(window = [1, 30, 600], vname = 'speed')
 ```
 
 ## Plotting is done with plotly as backend:

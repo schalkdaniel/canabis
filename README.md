@@ -16,7 +16,7 @@ ride = Ride("data/After_Riccione.gpx")
 ride.data[['ele', 'time', 'power', 'lon', 'lat', 'speed']].head()
 ```
 
-    |████████████████████████████████████████| 15659/15659 [100%] in 11.6s (1355.25/s) 
+    |████████████████████████████████████████| 15659/15659 [100%] in 10.5s (1487.09/s) 
 
 <div>
 <style scoped>
@@ -253,7 +253,6 @@ The same principle to obtain maximal values over specific time windows
 can be applied for any column with `.rollMax()`:
 
 ``` python
-ride.rollMax(window = [1, 30, 600], vname = 'speed')
 ride.rollMax(vname = 'watt_kg')
 ```
 
@@ -334,6 +333,54 @@ ride.rollMax(vname = 'watt_kg')
       <th>10</th>
       <td>3600</td>
       <td>2.679093</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+Or with a custom array of seconds:
+
+``` python
+ride.rollMax(window = [1, 30, 600], vname = 'speed')
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>seconds</th>
+      <th>speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>78.161713</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>30</td>
+      <td>67.984452</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>600</td>
+      <td>44.890662</td>
     </tr>
   </tbody>
 </table>
