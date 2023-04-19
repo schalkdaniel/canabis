@@ -30,9 +30,29 @@ ride.setFTP(250)
 ride.summary
 ```
 
-Plotting is done with plotly as backend:
+The same can be done for the body weight in kg:
+```{python}
+ride.setWeight(75)
+ride.summary
+```
+
+The method `.powerCurve()` yields the maximal power over 1, 3, 5, 10, 30 seconds, 1, 5, 10, 20,
+30 minutes, and 1 hour:
+```{python}
+ride.powerCurve()
+```
+
+The same principle to obtain maximal values over specific time windows can be applied for any column
+with `.rollMax()`:
+```{python}
+ride.rollMax(window = [1, 30, 600], vname = 'speed')
+ride.rollMax(vname = 'watt_kg')
+```
+
+## Plotting is done with plotly as backend:
 ```{python}
 #| eval: false
 ride.plotData('power').show()
+ride.plotData('watt_kg').show()
 ```
 ![](README_files/plolty-power.png)

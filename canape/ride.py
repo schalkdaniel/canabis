@@ -4,6 +4,7 @@ from .gpx_reader import readStravaGPX
 from math import floor
 import plotly.graph_objs as go
 import numpy as np
+import pandas as pd
 
 def prettyTime(t):
     hours = floor(t)
@@ -53,6 +54,22 @@ class Ride:
         self.summary['if'] = self.summary['np'] / ftp
         seconds_active = self.summary['hours_active'] * 60**2
         self.summary['tss'] = (seconds_active * self.summary['if'] * self.summary['np']) / (ftp * 36)
+    
+    def setWeight(self, weight):
+        self.summary['weight'] = weight
+        self.summary['watt_kg'] = self.summary['avg_power'] / weight
+        self.summary['np_kg'] = self.summary['np'] / weight
+        self.data['watt_kg'] = self.data['power'] / weight
+    
+    def powerCurve(self, window = [1, 3, 5, 10, 30, 60, 5*60, 10*60, 20*60, 30*60, 60**2]):
+        return self.rollMax(window = window, vname = 'power')
+        
+    def rollMax(self, window = [1, 3, 5, 10, 30, 60, 5*60, 10*60, 20*60, 30*60, 60**2], vname = 'power'):
+        pa = []
+        for w in window:
+            pa.append(self.data[vname].rolling(w).mean().max())
+        pc = pd.DataFrame(list(zip(window, pa)), columns = ['seconds', vname])
+        return pc
     
     def plotData(self, cname, bname = 'ele', nxintervals = 30 * 60):
         dfactive = self.data[self.data.active].copy()
